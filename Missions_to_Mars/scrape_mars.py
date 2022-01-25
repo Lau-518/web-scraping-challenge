@@ -120,7 +120,8 @@ def scrape():
     mars_data = {
         "news_title": news_title,
         "news_p": news_p,
-        "featured_image": pic_href,
+        "featured_image": featured_image_url,
+        "pic_href":pic_href,
         "table": table_df,
         "hemisphere_image_urls": hemisphere_image_urls
     }
