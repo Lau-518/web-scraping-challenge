@@ -6,13 +6,13 @@ import pymongo
 
 # Setting up mongo database
 
-client = pymongo.MongoClient('mongodb://localhost:27017')
-db = client.mars_db
-collection = db.mars 
+ 
 
 def scrape():
 
-
+    client = pymongo.MongoClient('mongodb://localhost:27017')
+    db = client.mars_db
+    collection = db.mars
 
     # Setup splinter
     executable_path = {'executable_path': ChromeDriverManager().install()}
@@ -36,8 +36,8 @@ def scrape():
     news_p_1 = soup.find_all('div', class_='article_teaser_body')
 
 
-    news_title = news_title_1[0]
-    news_p = news_p_1[0]
+    news_title = news_title_1[0].text
+    news_p = news_p_1[0].text
 
 
 
@@ -101,18 +101,19 @@ def scrape():
 
 
 
-    results = soup.find_all("div", class_="description")
-    
+    results = soup.find_all("div", class_="item")
+    pic_href=[]
     hemisphere_image_urls=[]
     for result in results:
         link = result.find('a')
         href = link['href']
         title = link.text.strip()
-        browser.visit(url4)
-        html = browser.html
-        soup = BeautifulSoup(html, 'html.parser')
-        pic = soup.find('img', class_='thumb')
-        pic_href = url4 + pic['src']
+        # browser.visit(url4)
+        # html = browser.html
+        # soup = BeautifulSoup(html, 'html.parser')
+        pic = result.find('img', class_='thumb')
+        pic_href.append( url4 + pic['src'])
+    
         hemisphere_image_urls.append({"title":title,"img_url":pic_href})
     print(hemisphere_image_urls)
 
@@ -122,7 +123,7 @@ def scrape():
         "news_p": news_p,
         "featured_image": featured_image_url,
         "pic_href":pic_href,
-        "table": table_df,
+        "table": table_df.to_html(),
         "hemisphere_image_urls": hemisphere_image_urls
     }
 

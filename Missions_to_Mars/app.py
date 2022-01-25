@@ -18,9 +18,10 @@ def index():
 
 @app.route("/scrape")
 def scraper():
-    mars_data = mongo.db.mars_data
+    mars_data_collection = mongo.db.mars_data
     mars_data = scrape_mars.scrape()
-    mars_data.update({}, mars_data, upsert=True)
+    print(mars_data)
+    mars_data_collection.update_one({}, {"$set": mars_data}, upsert=True)
     return redirect("/", code=302)
 
 
