@@ -67,9 +67,8 @@ def scrape():
     url3 = 'https://galaxyfacts-mars.com/'
 
 
-
     tables = pd.read_html(url3)
-    tables
+    
 
 
 
@@ -123,7 +122,7 @@ def scrape():
         "news_p": news_p,
         "featured_image": featured_image_url,
         "pic_href":pic_href,
-        "table": table_df.to_html(),
+        "table": table_df.to_html(classes="table table-striped"),
         "hemisphere_image_urls": hemisphere_image_urls
     }
 
